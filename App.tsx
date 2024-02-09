@@ -5,6 +5,9 @@ import Login from './src/components/Login';
 import { UserProvider } from './src/components/UserProvider';
 import Registro from './src/components/Registro';
 import Buscar from './src/components/Buscar';
+import DetalleArtista from './src/components/DetalleArtista';
+import Discos from './src/components/Discos';
+import DetalleDisco from './src/components/DetalleDisco';
 
 
 
@@ -20,11 +23,9 @@ const App = () => {
             <Stack.Screen name={'home'} component={Login} options={{title:'Inicio de sesión'}}/>
             <Stack.Screen name={'registro'} component={Registro} options={{title:'Registrar Usuario'}}/>
             <Stack.Screen name={'buscar'} component={Buscar} options={{title:'Buscar Artista'}}/>
-            {/* <Stack.Screen name={'lista'} component={List} options={{title:'Lista de Personajes'}}/>
-            <Stack.Screen name={'detalles'}
-                          component={Details}
-                          initialParams={{name:'',species:'',gender:'',image:''}}
-                          options={{title:'Datos del Personaje'}}/> */}
+            <Stack.Screen name={'detalle'} component={DetalleArtista} options={{title:'Datos de Artista'}}/>
+            <Stack.Screen name={'discos'} component={Discos} options={{title:'Discografía'}}/>
+            <Stack.Screen name={'detalleDisco'} component={DetalleDisco} options={{title:'Discografía'}}/>
         </Stack.Navigator>
       </NavigationContainer>
     </UserProvider>

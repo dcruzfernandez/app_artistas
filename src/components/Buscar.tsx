@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import Artista from '../interfaces/Artista';
 import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-const Buscar = () => {
+const Buscar = ({navigation}:NativeStackScreenProps<any,any>) => {
     const [clave,setClave] = useState<string>('');
-    const [artistas, setArtistas] = useState<Artista[]>([]);
+    //const [artistas, setArtistas] = useState<Artista[]>([]);
 
     const URL_BASE = 'https://www.theaudiodb.com/api/v1/json/2/search.php?';
 
@@ -25,7 +26,7 @@ const Buscar = () => {
                                             strBiographyES:item.strBiographyES,
                                             strArtistThumb:item.strArtistThumb
                                         }));
-            setArtistas(artistasArr);
+            return artistasArr;
         } catch (error) {
             console.error('Error al obtener los datos:', error);
             throw error;
@@ -34,7 +35,10 @@ const Buscar = () => {
     const buscarArtista = async()=>{
        try {
         if (clave !== '') {
-            await obtenerDatos();
+            const datos = await obtenerDatos();
+            if (datos.length > 0){
+                navigation.navigate('detalle',{...datos[0]});
+            }
         } else {
             Alert.alert('Error','Debe ingresar el nombre del artista');
         }
@@ -56,9 +60,9 @@ const Buscar = () => {
             <TouchableOpacity style={styles.button} onPress={buscarArtista}>
                 <Text style={styles.text_button}>Buscar</Text>
             </TouchableOpacity>
-            <View>
+            {/* <View>
                 <Text>{artistas.length !== 0 ? artistas[0].strArtist : ''}</Text>
-            </View>
+            </View> */}
         </View>
     );
 };
