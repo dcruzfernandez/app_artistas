@@ -24,7 +24,7 @@ const Buscar = ({navigation}:NativeStackScreenProps<any,any>) => {
                                             strStyle:item.strStyle,
                                             strGenre:item.strGenre,
                                             strBiographyES:item.strBiographyES,
-                                            strArtistThumb:item.strArtistThumb
+                                            strArtistThumb:item.strArtistThumb,
                                         }));
             return artistasArr;
         } catch (error) {

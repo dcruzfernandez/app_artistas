@@ -7,8 +7,6 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 const Login = ({navigation}:NativeStackScreenProps<any,any>) => {
 
     const {user} = useContext(UserContext);
-
-
     return (
         <View style={styles.container}>
             <Text style={styles.titulo}>Iniciar Sesión</Text>
@@ -73,5 +71,5 @@ const styles = StyleSheet.create({
     text_button:{
         color:'white',
         fontSize:20,
-    }
+    },
   });

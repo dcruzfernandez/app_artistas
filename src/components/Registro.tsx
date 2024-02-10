@@ -95,5 +95,5 @@ const styles = StyleSheet.create({
     text_button:{
         color:'white',
         fontSize:20,
-    }
+    },
   });
