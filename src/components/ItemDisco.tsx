@@ -8,12 +8,13 @@ interface PropsItem extends NativeStackScreenProps<any,any>{
 }
 export const ItemDisco = ({album,navigation}:PropsItem) => {
     const {strAlbumThumb,strAlbum, intYearReleased} = album;
+    const isImageValid = strAlbumThumb && strAlbumThumb !== 'null';
     return (
         <View style={styles.container}>
             <View style={styles.imagenContainer}>
-                <TouchableOpacity onPress={()=>navigation.navigate('detalleDisco',{...album})}>
+                {isImageValid && (<TouchableOpacity onPress={()=>navigation.navigate('detalleDisco',{...album})}>
                     <Image style={styles.imagen} source={{uri:strAlbumThumb}}/>
-                </TouchableOpacity>
+                </TouchableOpacity>)}
             </View>
             <View style={styles.textosContainer}>
                 <Text style={styles.text}>Album: </Text>
