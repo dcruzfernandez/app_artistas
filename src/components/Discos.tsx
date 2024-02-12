@@ -5,7 +5,7 @@ import Album from '../interfaces/Album';
 import { ItemDisco } from './ItemDisco';
 
 const Discos = ({route,navigation}:NativeStackScreenProps<any,any>) => {
-    const {id} = route.params;
+    const {id}:any = route.params;
     const [discos,setDiscos] = useState<Album[]>([]);
 
     const URL_BASE = 'https://www.theaudiodb.com/api/v1/json/2/album.php?';

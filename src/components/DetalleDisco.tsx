@@ -1,10 +1,37 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React from 'react';
-import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { FlatList, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Album from '../interfaces/Album';
+import Track from '../interfaces/track';
 
 const DetalleDisco = ({route, navigation}:NativeStackScreenProps<any,any>) => {
-    const {strArtist,strAlbum,intYearReleased,strAlbumThumb,strDescriptionES} =  route.params as Album;
+    const {idAlbum,strArtist,strAlbum,intYearReleased,strAlbumThumb} =  route.params as Album;
+    const [tracks,setTracks] = useState<Track[]>([]);
+    const URL_BASE = 'https://www.theaudiodb.com/api/v1/json/2/track.php?';
+
+    useEffect(() => {
+        const obtenerDatos = async () => {
+            try {
+                const url = `${URL_BASE}m=${idAlbum}`;
+                const respuesta = await fetch(url);
+                if (!respuesta.ok) {
+                    throw new Error('Error al obtener los datos');
+                }
+                const datos = await respuesta.json();
+                const tracksArr:Track[] = datos.track.map((item:any)=>({
+                                                idTrack:item.idTrack,
+                                                idAlbum:item.idAlbum,
+                                                strTrack:item.strTrack,
+                                            }));
+                setTracks(tracksArr);
+            } catch (error) {
+                console.error('Error al obtener los datos:', error);
+                throw error;
+            }
+        };
+
+        obtenerDatos();
+    }, [idAlbum]);
     return (
         <View style={styles.contenedor}>
             <Image
@@ -14,9 +41,13 @@ const DetalleDisco = ({route, navigation}:NativeStackScreenProps<any,any>) => {
             <Text style={styles.titulo}>Album: {strAlbum}</Text>
             <Text style={styles.titulo2}>Artista: {strArtist}</Text>
             <Text style={styles.titulo2}>Año: {intYearReleased}</Text>
-            <ScrollView style={styles.scroll}>
-                <Text>Descripción: {strDescriptionES}</Text>
-            </ScrollView>
+            <View style={styles.contenedorList}>
+                <Text style={styles.titulo3}>Lista de canciones</Text>
+                <FlatList data={tracks}
+                            renderItem={({item,index})=>(
+                                <Text>{index + 1}.{item.strTrack}</Text>)}
+                                />
+            </View>
             <TouchableOpacity style={styles.button1} onPress={()=>navigation.navigate('buscar')}>
                 <Text style={styles.text_button}>Regresar a Buscar</Text>
             </TouchableOpacity>
@@ -27,6 +58,11 @@ const DetalleDisco = ({route, navigation}:NativeStackScreenProps<any,any>) => {
 export default DetalleDisco;
 
 const styles = StyleSheet.create({
+    contenedorList:{
+        flex:1,
+        justifyContent:'flex-start',
+        alignItems:'flex-start',
+    },
     contenedor:{
       flex:1,
       justifyContent:'center',
@@ -44,6 +80,11 @@ const styles = StyleSheet.create({
         textAlign:'center',
         marginBottom:10,
       },
+      titulo3:{
+        color:'#2D5A1E',
+        fontSize:40,
+        fontWeight:'bold',
+    },
     button: {
         backgroundColor: '#A12709',
         color:'white',
